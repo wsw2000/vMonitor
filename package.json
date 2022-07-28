@@ -1,0 +1,38 @@
+{
+  "name": "v-monitor",
+  "version": "1.0.0",
+  "description": "v-monitor是轻量级前端埋点监控上报sdk",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "rollup -w -c",
+    "build": "rollup -c",
+    "lint": "eslint src --fix --ext .ts,.tsx ",
+    "format": "prettier --write \"**/*.{js,ts,md,json}\" --ignore-path \"./.gitignore\"",
+    "view": "npm view v-monitor versions"
+  },
+  "keywords": [
+    "前端",
+    "轻量级埋点",
+    "前端埋点",
+    "monitor"
+  ],
+  "author": "",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "rollup": "^2.77.2",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-typescript2": "^0.32.1",
+    "typescript": "^4.7.4"
+  }
+}
