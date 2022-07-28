@@ -36,7 +36,7 @@ export default class Monitor {
       hashTracker: false,
       domTracker: true,
       debug: false,
-      jsErrorTracker: false,
+      jsErrorTracker: false
     }
   }
 
@@ -49,7 +49,7 @@ export default class Monitor {
   public setConfig(config: RequestOptions) {
     this.requestOptions = {
       ...this.requestOptions,
-      ...config,
+      ...config
     }
   }
 

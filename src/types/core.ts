@@ -50,5 +50,5 @@ export interface RequestOptions extends Pick<DefaultConfigOptons, 'app_id' | 'ap
 
 //版本
 export enum MonitorConfig {
-  version = '1.0.0',
+  version = '1.0.0'
 }
