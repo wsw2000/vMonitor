@@ -15,11 +15,10 @@ module.exports = {
   ignorePatterns: ['dist', 'node_modules', '*.d.ts'],
   rules: {
     semi: ['warn', 'never'],
-    // 要求使用 === 和 !==
     eqeqeq: 'warn',
-    // 强制使用骆驼拼写法命名约定
-    camelcase: 'off',
-    // 禁止 if 语句中 return 语句之后有 else 块
+    // camelcase: 'off',
     'no-else-return': 'warn',
+    'typescript-eslint/no-explicit-any': 'off',
+    'eslint@typescript-eslint/no-explicit-any': 'off',
   },
 }

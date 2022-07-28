@@ -10,10 +10,12 @@
  * @sdkVersionsdk 版本
  * @pushPerformance 页面性能上报
  * @jsErrorTracker js 和 promise 报错异常上报
+ * @config 自定义配置
  */
 
-export interface ConfigOptons {
-  url: string
+export interface DefaultConfigOptons {
+  requestUrl: string
+  url?: string
   app_id?: string | undefined
   app_name?: string | undefined
   token?: string
@@ -30,12 +32,9 @@ export interface ConfigOptons {
 /**
  *
  */
-export interface RequestOptions {
-  app_id?: string | undefined
-  app_name?: string | undefined
+export interface RequestOptions extends Pick<DefaultConfigOptons, 'app_id' | 'app_name' | 'token'> {
   module?: string | undefined
   module_name?: string | undefined
-  token?: string
   ua: string
   url: string
   domain: string
