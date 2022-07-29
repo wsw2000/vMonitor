@@ -10,16 +10,20 @@
     <div>aa</div>
     <script src="../dist/index.js"></script>
     <script>
-      new monitor({
+      new Monitor({
         url: '127.0.0.1:3000',
         token: '12121',
         app_id: 1121212,
         app_name: 'app_name',
         historyTracker: true,
         hashTracker: true,
+        beaconTracker: true,
         pushPerformance: true,
         jsErrorTracker: true,
         debug: true,
+        config: {
+          uuid: 'wsw'
+        }
       })
     </script>
   </body>
