@@ -1,6 +1,5 @@
-import {isServerRendering} from './is'
-
-type EventMap = WindowEventMap | HTMLElementEventMap
+import { isServerRendering } from './is'
+import { EventMap } from '../types/event'
 
 export const NOOP = () => {
   return undefined
@@ -26,7 +25,7 @@ export const off = (() => {
   }
   return <K extends keyof EventMap>(
     element: HTMLElement | Window,
-    type: K,
+    type: K | string,
     handler: (ev: EventMap[K]) => void,
     options: boolean | EventListenerOptions = false
   ) => {

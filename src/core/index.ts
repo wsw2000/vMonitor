@@ -1,8 +1,10 @@
 /** @format */
 
-import {DefaultConfigOptons, RequestOptions, MonitorConfig} from '../types/core'
-import {bindHistoryEvent} from '../utils/event'
-import {ishasSendBeacon} from '../utils/is'
+import { DefaultConfigOptons, RequestOptions, MonitorConfig } from '../types/core'
+import { EventMap } from '../types/event'
+import { bindHistoryEvent } from '../utils/event'
+import { ishasSendBeacon } from '../utils/is'
+import { on } from '../utils/listener'
 import QS from 'qs'
 
 export default class Monitor {
@@ -72,10 +74,13 @@ export default class Monitor {
       referrer: document.referrer || ''
     }
   }
-  private captureEvents(MouseEventList: string[], data: RequestOptions = this.requestOptions) {
+  private captureEvents<K extends keyof EventMap>(
+    MouseEventList: K[],
+    data: RequestOptions = this.requestOptions
+  ) {
     MouseEventList.forEach(event => {
-      window.addEventListener(event, () => {
-        this.reportTracker({...data, type: event})
+      on(window, event, () => {
+        this.reportTracker({ ...data, type: event })
       })
     })
   }
@@ -91,7 +96,7 @@ export default class Monitor {
   }
   // navigator.sendBeacon 关闭浏览器还能请求
   private requestByPost<T extends RequestOptions>(requestUrl: string, data: T) {
-    const params = Object.assign(this.requestOptions, data, {time: new Date().getTime()})
+    const params = Object.assign(this.requestOptions, data, { time: new Date().getTime() })
 
     console.log('requestByPost ~~', params)
 
@@ -117,15 +122,14 @@ export default class Monitor {
   }
 
   private installMonitor() {
-    const {historyTracker, hashTracker, jsErrorTracker, debug, pushPerformance, domTracker} =
+    const { historyTracker, hashTracker, jsErrorTracker, debug, pushPerformance, domTracker } =
       this.defaultOptons
 
     if (historyTracker) {
-      console.log('开启监听historyTracker')
-      this.captureEvents(['pushState', 'replaceState', 'popState'])
+      this.captureEvents(['pushState', 'replaceState', 'popstate'])
     }
     if (hashTracker) {
-      console.log('开启监听hashTracker')
+      this.captureEvents(['hashchange'])
     }
     if (domTracker) {
     }
