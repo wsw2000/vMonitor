@@ -106,98 +106,15 @@ export default class Monitor {
     })
   }
 
-  // private targetKeyReport() {
-  //   let evTimeStamp = 0
-  //   window.addEventListener(
-  //     'click',
-  //     e => {
-  //       e = e || window.event
+  private targetKeyReport() {
+    on(window, 'click', e => {
+      const target = e.target as HTMLElement
+      const targetValue = target.getAttribute('m-btn')
+      console.log('targetValue~~ ', targetValue)
+    })
+  }
 
-  //       // 50毫秒内不能触发多次
-  //       const now = +new Date()
-  //       if (now - evTimeStamp < 50) {
-  //         return
-  //       }
-  //       evTimeStamp = now
-
-  //       const targetPushFn = target => {
-  //         const parents = getParentsByAttrKey(target, 'm_p')
-  //         parents.unshift(target)
-  //         const monitorPaths = getMonitorPaths(parents)
-  //         const targetText = target.getAttribute('m_btn') || target.innerText
-  //         const targetValue = target.getAttribute('m_val') || ''
-
-  //         let path = monitorPaths
-
-  //         // 拼接开始路径
-  //         if (this.defaults.startPath) {
-  //           if (monitorPaths && monitorPaths.length) {
-  //             path = [...this.defaults.startPath, ...monitorPaths]
-  //           } else {
-  //             path = this.defaults.startPath
-  //           }
-  //         }
-
-  //         this.push({
-  //           type: 'click',
-  //           path_name: JSON.stringify(path),
-  //           event_name: targetText,
-  //           event_value: targetValue,
-  //           actions: JSON.stringify([
-  //             {
-  //               name: targetText
-  //             }
-  //           ])
-  //         })
-  //       }
-  //       const target = e.srcElement ? e.srcElement : e.target
-
-  //       let mBtnsArr = []
-  //       // 根据属性自动发起点击埋点
-  //       if (target && target.attributes.getNamedItem && target.attributes.getNamedItem('m_btn')) {
-  //         mBtnsArr.push(target)
-  //       }
-  //       const targetParentsBtns = getParentsByAttrKey(target, 'm_btn')
-  //       mBtnsArr = mBtnsArr.concat(targetParentsBtns)
-  //       mBtnsArr.forEach(el => {
-  //         targetPushFn(el)
-  //       })
-
-  //       if (!this.autoPush || mBtnsArr.length) {
-  //         return
-  //       }
-
-  //       const _actions = this.getStorageAction()
-  //       const currHtml = this.getCurrHtml(e)
-  //       let actionData = this.getBindingData(e)
-
-  //       if (!currHtml) return
-
-  //       try {
-  //         actionData = JSON.parse(actionData)
-  //       } catch (err) {
-  //         // err
-  //       }
-
-  //       _actions.push({
-  //         type: e.type,
-  //         html: currHtml,
-  //         data: actionData,
-  //         time: dateFormat(new Date(), 'yyyy-MM-dd hh:mm:sss')
-  //       })
-
-  //       this.store
-  //         ? this.setStorageAction(_actions)
-  //         : this.push({
-  //             type: 'click',
-  //             actions: JSON.stringify([actionData])
-  //           })
-  //     },
-  //     true
-  //   )
-  // }
-
-  //上报
+  // 上报
   private reportTracker<T extends RequestOptions>(data: T) {
     const requestUrl = this.defaultOptons.requestUrl || this.defaultOptons.url
 
@@ -247,7 +164,7 @@ export default class Monitor {
       this.captureEvents(['hashchange'])
     }
     if (domTracker) {
-      // this.targetKeyReport()
+      this.targetKeyReport()
     }
     if (pushPerformance) {
     }
