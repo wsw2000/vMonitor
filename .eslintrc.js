@@ -21,6 +21,7 @@ module.exports = {
     'comma-dangle': [2, 'never'],
     'prettier/prettier': 'off',
     'prefer-rest-params': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off'
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-var-requires': 'off'
   }
 }
