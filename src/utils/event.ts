@@ -14,3 +14,22 @@ export const bindHistoryEvent = <T extends keyof History>(type: T): (() => any) 
     return newEvent //返回方法，用于重写history的方法
   }
 }
+
+export const mouseEventList: Array<string> = [
+  'click',
+  'dblclick',
+  'contextmenu',
+  'mousedown',
+  'mouseup',
+  'mouseenter',
+  'mouseout',
+  'mouseover'
+]
+
+export const pageEventList: Array<string> = [
+  'page',
+  'hashchange',
+  'popstate',
+  'pushState',
+  'replaceState'
+]

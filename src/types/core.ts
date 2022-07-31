@@ -13,10 +13,9 @@
  * @sdkVersionsdk 版本
  * @config 自定义配置
  */
-
 export interface DefaultConfigOptons {
   requestUrl: string
-  url: string
+  url?: string
   app_id?: string | undefined
   app_name?: string | undefined
   token?: string
