@@ -1,26 +1,52 @@
-import { isObject, isArray } from './is'
-export const qsStringify = (data: any, flag?: boolean | string) => {
-  let str = '',
-    originData,
-    encodeData
-  for (const i in data) {
-    if (data.hasOwnProperty(i)) {
-      originData = data[i]
-      if (isObject(originData) || isArray(originData)) {
-        str += qsStringify(originData, i)
-      } else {
-        encodeData = encodeURIComponent(originData)
-        if (isObject(data) && flag) {
-          str += `${flag}[${i}]=${encodeData}&`
-        } else if (isArray(data) && flag) {
-          str += `${flag}[${i}]=${encodeData}&`
-          // str += `${flag}=${encodeData}&`
-        } else {
-          if (str.length > 0 && str[str.length - 1] !== '&') str += '&'
-          str += `${i}=${encodeData}&`
-        }
-      }
-    }
+const stringifyPrimitive = function (v: string) {
+  switch (typeof v) {
+    case 'string':
+      return v
+
+    case 'boolean':
+      return v ? 'true' : 'false'
+
+    case 'number':
+      return isFinite(v) ? v : ''
+
+    default:
+      return ''
   }
-  return str[str.length - 1] === '&' ? str.slice(0, -1) : str
+}
+/**
+ *
+ * @param obj
+ * @param sep
+ * @param eq
+ * @param name
+ * @returns
+ */
+export const qsStringify = (obj: any, sep?: string, eq?: string, name?: string) => {
+  sep = sep || '&'
+  eq = eq || '='
+  if (obj === null) {
+    obj = undefined
+  }
+
+  if (typeof obj === 'object') {
+    return Object.keys(obj)
+      .map(function (k) {
+        const ks = encodeURIComponent(stringifyPrimitive(k)) + eq
+        if (Array.isArray(obj[k])) {
+          return obj[k]
+            .map(function (v: string) {
+              return ks + encodeURIComponent(stringifyPrimitive(v))
+            })
+            .join(sep)
+        }
+        return ks + encodeURIComponent(stringifyPrimitive(obj[k]))
+      })
+      .filter(Boolean)
+      .join(sep)
+  }
+
+  if (!name) return ''
+  return (
+    encodeURIComponent(stringifyPrimitive(name)) + eq + encodeURIComponent(stringifyPrimitive(obj))
+  )
 }
