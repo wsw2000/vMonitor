@@ -2,10 +2,11 @@
 
 import { DefaultConfigOptons, RequestOptions, MonitorConfig } from '../types/core'
 import { EventMap } from '../types/event'
-import { bindHistoryEvent, pageEventList } from '../utils/event'
+import { bindHistoryEvent, pageEventList, mouseEventList } from '../utils/event'
 import { ishasSendBeacon } from '../utils/is'
 import { on } from '../utils/listener'
-import { qsStringify } from '../utils'
+import { qsStringify } from '../utils/qsStringify'
+import { getParentsByAttrKey, getMonitorPaths } from '../utils/dom'
 export default class Monitor {
   public defaultOptons: DefaultConfigOptons
   private version: string | undefined
@@ -95,6 +96,7 @@ export default class Monitor {
     }
   }
 
+  //pv自动上报
   private captureEvents<K extends keyof EventMap>(
     eventList: K[],
     data: RequestOptions = this.requestOptions
@@ -105,13 +107,53 @@ export default class Monitor {
       })
     })
   }
+  // Dom 事件自动上报
+  private targetKeyReport<K extends keyof WindowEventMap>(eventList: K[]) {
+    eventList.forEach(event => {
+      on(window, event, e => {
+        const target = e.target as HTMLElement
+        this.clickTarget(target)
 
-  private targetKeyReport() {
-    on(window, 'click', e => {
-      const target = e.target as HTMLElement
-      const targetValue = target.getAttribute('m-btn')
-      console.log('targetValue~~ ', targetValue)
+        // const targetValue = target.getAttribute('m_btn')
+        // const matched = getParentsByAttrKey(target, 'm_p')
+        // console.log('matched~~ ', matched)
+      })
     })
+  }
+
+  private clickTarget<T extends HTMLElement>(target: T) {
+    const targetPushFn = (target: HTMLElement) => {
+      const parents = getParentsByAttrKey(target, 'm_p')
+      parents.unshift(target)
+      const monitorPaths = getMonitorPaths(parents)
+      const targetText = target.getAttribute('m_btn') || target.innerText
+      const targetValue = target.getAttribute('m_val') || ''
+      console.log('~~ monitorPaths', monitorPaths)
+      this.push({
+        type: 'click',
+        path_name: JSON.stringify(monitorPaths),
+        event_name: targetText,
+        event_value: targetValue,
+        actions: JSON.stringify([
+          {
+            name: targetText
+          }
+        ])
+      })
+    }
+    let mBtnsDomArr = []
+    // 根据属性自动发起点击埋点
+    if (target?.attributes?.getNamedItem('m_btn')) {
+      mBtnsDomArr.push(target)
+    }
+    const targetParentsBtns = getParentsByAttrKey(target, 'm_btn')
+    mBtnsDomArr = [...mBtnsDomArr, ...targetParentsBtns]
+    mBtnsDomArr.forEach(e => targetPushFn(e))
+  }
+  // 手动push 上报
+  public push(data: RequestOptions = this.requestOptions) {
+    console.log('手动push 上报 ~~ ~  ', data)
+    this.reportTracker(data)
   }
 
   // 上报
@@ -164,7 +206,9 @@ export default class Monitor {
       this.captureEvents(['hashchange'])
     }
     if (domTracker) {
-      this.targetKeyReport()
+      const { domEventList } = this.defaultOptons
+      const eventList = domEventList?.length ? domEventList : mouseEventList
+      this.targetKeyReport(eventList)
     }
     if (pushPerformance) {
     }

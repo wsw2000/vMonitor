@@ -11,6 +11,7 @@
  * @pushPerformance 页面性能上报
  * @jsErrorTracker js 和 promise 报错异常上报
  * @sdkVersionsdk 版本
+ * @domEventList  Array<keyof WindowEventMap> ['click', 'dblclick','mousedown'] 默认['click']
  * @config 自定义配置
  */
 export interface DefaultConfigOptons {
@@ -27,6 +28,7 @@ export interface DefaultConfigOptons {
   pushPerformance?: boolean
   jsErrorTracker?: boolean
   sdkVersion?: string | number
+  domEventList?: Array<keyof WindowEventMap>
   config?: Record<string, any> | undefined
 }
 

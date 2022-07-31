@@ -15,15 +15,16 @@ export const bindHistoryEvent = <T extends keyof History>(type: T): (() => any) 
   }
 }
 
-export const mouseEventList: Array<string> = [
-  'click',
-  'dblclick',
-  'contextmenu',
-  'mousedown',
-  'mouseup',
-  'mouseenter',
-  'mouseout',
-  'mouseover'
+//我司只有dom的click事件上报  可以在config的domEventList字段加上
+export const mouseEventList: Array<keyof WindowEventMap> = [
+  'click'
+  // 'dblclick',
+  // 'contextmenu',
+  // 'mousedown',
+  // 'mouseup',
+  // 'mouseenter',
+  // 'mouseout',
+  // 'mouseover'
 ]
 
 export const pageEventList: Array<string> = [
