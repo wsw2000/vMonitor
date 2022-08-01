@@ -43,8 +43,8 @@ export interface DefaultConfigOptons {
  * @actions 事件
  * @type 类型  例如 page (pv、uv) ，click（点击事件），input (输入框)，statistics (自定义统计)
  * @path_name 页面name
- * @event_name
- * @event_value
+ * @event_name  '点击名称'
+ * @event_value '点击按钮的值｜input的值'
  * @config 自定义配置
  */
 export interface RequestOptions extends Pick<DefaultConfigOptons, 'app_id' | 'app_name' | 'token'> {
@@ -58,8 +58,11 @@ export interface RequestOptions extends Pick<DefaultConfigOptons, 'app_id' | 'ap
   actions?: string
   type?: string
   path_name?: string
+  path?: string
   event_name?: string
+  name?: string
   event_value?: string
+  value?: string
   config?: Record<string, any> | undefined
 }
 

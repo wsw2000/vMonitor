@@ -128,7 +128,7 @@ export default class Monitor {
       const monitorPaths = getMonitorPaths(parents)
       const targetText = target.getAttribute('m_btn') || target.innerText
       const targetValue = target.getAttribute('m_val') || ''
-      console.log('~~ monitorPaths', monitorPaths)
+
       this.push({
         type: 'click',
         path_name: JSON.stringify(monitorPaths),
@@ -150,9 +150,43 @@ export default class Monitor {
     mBtnsDomArr = [...mBtnsDomArr, ...targetParentsBtns]
     mBtnsDomArr.forEach(e => targetPushFn(e))
   }
-  // 手动push 上报
-  public push(data: RequestOptions = this.requestOptions) {
-    console.log('手动push 上报 ~~ ~  ', data)
+  public clickPush(data: RequestOptions = this.requestOptions) {
+    this.push({
+      type: 'click',
+      path: data.path,
+      actions: JSON.stringify([
+        {
+          name: data.name || '',
+          value: data.value || ''
+        }
+      ])
+    })
+  }
+
+  /**
+   * 上报数据
+   * @param {object} obj
+   */
+  public push(data: RequestOptions) {
+    if (!data.path_name) {
+      data.path_name = ''
+      if (data.path) {
+        if (Array.isArray(data.path)) {
+          data.path_name = JSON.stringify(data.path)
+        } else {
+          data.path_name = data.path
+        }
+      }
+    }
+
+    if (!data.event_name && data.actions) {
+      const actions = JSON.parse(data.actions)
+      if (actions.length) {
+        data.event_name = actions[0].name || ''
+        data.event_value = actions[0].value || ''
+      }
+    }
+
     this.reportTracker(data)
   }
 
@@ -183,6 +217,7 @@ export default class Monitor {
     const img = document.createElement('img')
     const params = qsStringify({
       ...this.getCurrInfo(),
+      time: new Date().getTime(),
       ...data,
       actions: JSON.stringify(data.actions)
     })

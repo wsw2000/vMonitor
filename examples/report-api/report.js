@@ -8,7 +8,12 @@ app.use(cors())
 
 app.use(express.urlencoded({ extended: false }))
 
-app.post('/report', (req, res, next) => {
+app.get('/report', (req, res) => {
+  console.log(req.query)
+  res.end("ok~")
+})
+
+app.post('/report', (req, res) => {
   console.log(req.body)
   res.end("ok~")
 })

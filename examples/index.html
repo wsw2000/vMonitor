@@ -31,14 +31,15 @@
       <div class="p-5" m_p="发布详情">
         <span> m_p:发布详情</span>
         <div class="btn center w-[100px] mt-10" m_btn="点击埋点1">点击埋点1</div>
-        <div class="p-10" m_p="详情看板">
-          <div class="btn center w-[100px] mt-10" m_btn="点击埋点3">点击埋点2</div>
+        <div class="p-10 flex flex-col" m_p="详情看板">
+          <div class="btn center w-[100px] mt-10" m_btn="点击埋点2">点击埋点2</div>
+          <div id="push_btn" class="btn center w-[100px] mt-10">手动埋点</div>
         </div>
       </div>
     </div>
     <script src="../dist/index.js"></script>
     <script>
-      new Monitor({
+      const monitor = new Monitor({
         url: '//127.0.0.1:8088/report',
         token: '12121',
         app_id: 1121212,
@@ -53,6 +54,24 @@
           uuid: 'wsw'
         }
       })
+      const push_btn = document.querySelector('#push_btn')
+      push_btn.onclick = () => {
+        console.log('monitor~~ ', monitor)
+        // monitor.push({
+        //   type: 'click',
+        //   path: JSON.stringify(['抖音排行榜']),
+        //   actions: JSON.stringify([
+        //     {
+        //       name: '点击切换tab'
+        //     }
+        //   ])
+        // })
+        monitor.clickPush({
+          path: JSON.stringify(['抖音排行榜']),
+          name: '点击复选框',
+          value: 'wsw'
+        })
+      }
     </script>
   </body>
 </html>
