@@ -7,8 +7,8 @@
   "browser": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "rollup -w -c",
-    "build": "rollup -c",
+    "dev": "NODE_ENV=development rollup -w -c",
+    "build": "NODE_ENV=production rollup -c",
     "lint": "eslint src --fix --ext .ts,.tsx ",
     "format": "prettier --write \"**/*.{js,ts,md,json}\" --ignore-path \"./.gitignore\"",
     "view": "npm view v-monitor versions"

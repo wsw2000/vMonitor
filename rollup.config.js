@@ -6,6 +6,9 @@ import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 import path from 'path'
 import dts from 'rollup-plugin-dts'
+
+const isPro = process.env.NODE_ENV === 'production'
+
 export default [
   {
     //入口文件
@@ -34,17 +37,16 @@ export default [
       nodeResolve({
         browser: true
       }),
-      babel({
-        exclude: 'node_modules/**', // 防止打包node_modules下的文件
-        runtimeHelpers: true       // 使plugin-transform-runtime生效
-      }),
-      // 压缩代码
-      terser(),
+      commonjs(),
       typescript({
         exclude: "node_modules/**",
         typescript: require("typescript")
       }),
-      commonjs()
+      babel({
+        exclude: 'node_modules/**', // 防止打包node_modules下的文件
+        extensions: ['.js', '.ts']
+      }),
+      isPro && terser() // 压缩代码
     ]
   },
   {
