@@ -15,13 +15,13 @@
 
 ### 浏览器引入
 ```html
-<script src="v-monitor/dist/index.js"></script>
+<script src="use-monitor/dist/index.js"></script>
 ```
 ### npm
 
 ```bash
-npm install v-monitor
-import Monitor form v-monitor
+npm install use-monitor
+import Monitor form use-monitor
 var monitor = new Monitor({
   url: '//127.0.0.1:8088/report',
   app_id: 1121212,
