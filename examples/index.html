@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>埋点测试demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
       .dark {
         background-color: #1a1a1a;
@@ -38,6 +39,7 @@
       </div>
     </div>
     <script src="../dist/index.js"></script>
+
     <script>
       const monitor = new Monitor({
         url: '//127.0.0.1:8088/report',
@@ -60,6 +62,7 @@
         monitor.setConfig({
           module_name: 'module_name2'
         })
+
         monitor.push({
           type: 'click',
           path: JSON.stringify(['抖音排行榜']),
@@ -72,6 +75,13 @@
             name: 'aaaa'
           }
         })
+        const rejectP = () => {
+          return new Promise((resolve, reject) => {
+            reject()
+          })
+        }
+        // monitor.aa() // error
+        rejectP()
         // monitor.clickPush({
         //   path: JSON.stringify(['抖音排行榜']),
         //   name: '点击复选框',

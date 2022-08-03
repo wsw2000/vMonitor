@@ -1,10 +1,7 @@
 import Monitor from './index'
 
 export function performanceMonitor(this: Monitor) {
-  console.log(this, 'performance')
   document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded~~ ', performance)
-
     if (!performance) {
       // 当前浏览器不支持
       console.log('你的浏览器不支持 performance 接口')
@@ -12,6 +9,8 @@ export function performanceMonitor(this: Monitor) {
     }
 
     const timing = performance.timing
+    console.log('PerformanceNavigationTiming~~~', window.PerformanceNavigationTiming)
+
     const start = timing.navigationStart
     let dnsTime = 0,
       tcpTime = 0,

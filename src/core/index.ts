@@ -5,9 +5,10 @@ import { EventMap } from '../types/event'
 import { bindHistoryEvent, pageEventList, mouseEventList } from '../utils/event'
 import { ishasSendBeacon } from '../utils/is'
 import { on } from '../utils/listener'
-import { qsStringify } from '../utils/qsStringify'
+import { qsStringify, delEmptyQueryNodes } from '../utils'
 import { getParentsByAttrKey, getMonitorPaths } from '../utils/dom'
 import { performanceMonitor } from './performance'
+import { errorEvent } from './error'
 
 export default class Monitor {
   public defaultOptons: DefaultConfigOptons
@@ -43,7 +44,7 @@ export default class Monitor {
       beaconTracker: false,
       domTracker: true,
       debug: false,
-      jsErrorTracker: false,
+      jsErrorTracker: true,
       ...options
     }
   }
@@ -107,7 +108,7 @@ export default class Monitor {
   ) {
     eventList.forEach(event => {
       on(window, event, () => {
-        this.reportTracker({ ...data, type: event })
+        this.push({ ...data, type: event })
       })
     })
   }
@@ -202,13 +203,14 @@ export default class Monitor {
       data?.config
     )
     delete params?.config
-    this.pushDebuggerLog(params)
+    const _params = delEmptyQueryNodes(params)
+    this.pushDebuggerLog(_params)
 
     if (this.defaultOptons.beaconTracker && !!ishasSendBeacon) {
-      this.requestByPost(requestUrl!, params)
+      this.requestByPost(requestUrl!, _params)
       return
     }
-    this.requestByGet(requestUrl!, params)
+    this.requestByGet(requestUrl!, _params)
   }
   // navigator.sendBeacon 关闭浏览器还能请求
   private requestByPost<T extends RequestOptions>(requestUrl: string, data: T) {
@@ -249,7 +251,7 @@ export default class Monitor {
       performanceMonitor.call(this)
     }
     if (jsErrorTracker) {
-      console.log('开启js错误')
+      errorEvent.call(this)
     }
   }
 }

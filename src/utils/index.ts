@@ -1,3 +1,21 @@
+/**
+ * 去除对象key为空的情况
+ */
+type Obj = Record<string, any>
+export const delEmptyQueryNodes = (obj: Obj) => {
+  Object.keys(obj).forEach((key: keyof Obj) => {
+    const value = obj[key]
+    value && typeof value === 'object' && delEmptyQueryNodes(value)
+    ;(value === '' ||
+      value === null ||
+      value === undefined ||
+      value.length === 0 ||
+      Object.keys(value).length === 0) &&
+      delete obj[key]
+  })
+  return obj
+}
+
 const stringifyPrimitive = function (v: string) {
   switch (typeof v) {
     case 'string':
