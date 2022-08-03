@@ -19,6 +19,8 @@ export interface DefaultConfigOptons {
   url?: string
   app_id?: string | undefined
   app_name?: string | undefined
+  module?: string | undefined
+  module_name?: string | undefined
   token?: string
   historyTracker?: boolean
   hashTracker?: boolean
@@ -47,9 +49,8 @@ export interface DefaultConfigOptons {
  * @event_value '点击按钮的值｜input的值'
  * @config 自定义配置
  */
-export interface RequestOptions extends Pick<DefaultConfigOptons, 'app_id' | 'app_name' | 'token'> {
-  module?: string | undefined
-  module_name?: string | undefined
+export interface RequestOptions
+  extends Pick<DefaultConfigOptons, 'app_id' | 'app_name' | 'token' | 'module' | 'module_name'> {
   ua?: string
   url?: string
   domain?: string

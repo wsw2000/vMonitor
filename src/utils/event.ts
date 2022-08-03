@@ -32,5 +32,6 @@ export const pageEventList: Array<string> = [
   'hashchange',
   'popstate',
   'pushState',
-  'replaceState'
+  'replaceState',
+  'performance'
 ]

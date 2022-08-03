@@ -44,6 +44,7 @@
         token: '12121',
         app_id: 1121212,
         app_name: 'app_name',
+        module_name: 'module_name1',
         historyTracker: true,
         hashTracker: true,
         beaconTracker: false,
@@ -56,21 +57,26 @@
       })
       const push_btn = document.querySelector('#push_btn')
       push_btn.onclick = () => {
-        console.log('monitor~~ ', monitor)
-        // monitor.push({
-        //   type: 'click',
-        //   path: JSON.stringify(['抖音排行榜']),
-        //   actions: JSON.stringify([
-        //     {
-        //       name: '点击切换tab'
-        //     }
-        //   ])
-        // })
-        monitor.clickPush({
-          path: JSON.stringify(['抖音排行榜']),
-          name: '点击复选框',
-          value: 'wsw'
+        monitor.setConfig({
+          module_name: 'module_name2'
         })
+        monitor.push({
+          type: 'click',
+          path: JSON.stringify(['抖音排行榜']),
+          actions: JSON.stringify([
+            {
+              name: '点击切换tab'
+            }
+          ]),
+          config: {
+            name: 'aaaa'
+          }
+        })
+        // monitor.clickPush({
+        //   path: JSON.stringify(['抖音排行榜']),
+        //   name: '点击复选框',
+        //   value: 'wsw'
+        // })
       }
     </script>
   </body>

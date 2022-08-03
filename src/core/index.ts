@@ -7,6 +7,8 @@ import { ishasSendBeacon } from '../utils/is'
 import { on } from '../utils/listener'
 import { qsStringify } from '../utils/qsStringify'
 import { getParentsByAttrKey, getMonitorPaths } from '../utils/dom'
+import { performanceMonitor } from './performance'
+
 export default class Monitor {
   public defaultOptons: DefaultConfigOptons
   private version: string | undefined
@@ -28,13 +30,7 @@ export default class Monitor {
   private initDef(options: DefaultConfigOptons): DefaultConfigOptons {
     this.version = MonitorConfig.version
 
-    this.requestOptions = {
-      app_id: options.app_id,
-      app_name: options.app_name,
-      token: options.token,
-      ...options?.config, // 自定义参数 如 uuid之类的用户鉴权参数
-      ...this.requestOptions
-    }
+    this.setRequestOptions(options)
 
     //添加pushState replaceState event
     window.history['pushState'] = bindHistoryEvent('pushState')
@@ -51,18 +47,26 @@ export default class Monitor {
       ...options
     }
   }
-
-  //设置请求的参数选项
-  public setRequestOptions(config: RequestOptions) {
-    this.setConfig(config)
-  }
-
-  //配合公司老api
-  public setConfig(config: RequestOptions) {
+  public setRequestOptions(options: RequestOptions) {
     this.requestOptions = {
       ...this.requestOptions,
+      app_id: options?.app_id,
+      app_name: options?.app_name,
+      token: options?.token,
+      module: options?.module,
+      module_name: options?.module_name,
+      ...options?.config // 自定义参数 如 uuid之类的用户鉴权参数
+    }
+  }
+
+  //设置
+  public setConfig(config: RequestOptions) {
+    console.log('setConfig~~ ', config)
+    this.defaultOptons = {
+      ...this.defaultOptons,
       ...config
     }
+    this.setRequestOptions(this.defaultOptons)
   }
   public getCurrInfo() {
     return <RequestOptions>{
@@ -113,10 +117,6 @@ export default class Monitor {
       on(window, event, e => {
         const target = e.target as HTMLElement
         this.clickTarget(target)
-
-        // const targetValue = target.getAttribute('m_btn')
-        // const matched = getParentsByAttrKey(target, 'm_p')
-        // console.log('matched~~ ', matched)
       })
     })
   }
@@ -164,7 +164,7 @@ export default class Monitor {
   }
 
   /**
-   * 上报数据
+   * 手动上报数据
    * @param {object} obj
    */
   public push(data: RequestOptions) {
@@ -186,44 +186,44 @@ export default class Monitor {
         data.event_value = actions[0].value || ''
       }
     }
-
     this.reportTracker(data)
   }
 
   // 上报
   private reportTracker<T extends RequestOptions>(data: T) {
     const requestUrl = this.defaultOptons.requestUrl || this.defaultOptons.url
-
-    this.pushDebuggerLog(data)
+    const params = Object.assign(
+      this.getCurrInfo(),
+      data,
+      {
+        time: new Date().getTime()
+      },
+      { actions: JSON.stringify(data.actions) },
+      data?.config
+    )
+    delete params?.config
+    this.pushDebuggerLog(params)
 
     if (this.defaultOptons.beaconTracker && !!ishasSendBeacon) {
-      this.requestByPost(requestUrl!, data)
+      this.requestByPost(requestUrl!, params)
       return
     }
-    this.requestByGet(requestUrl!, data)
+    this.requestByGet(requestUrl!, params)
   }
   // navigator.sendBeacon 关闭浏览器还能请求
   private requestByPost<T extends RequestOptions>(requestUrl: string, data: T) {
-    const params = Object.assign(this.getCurrInfo(), data, { time: new Date().getTime() })
-
     const headers = {
       type: 'application/x-www-form-urlencoded'
     }
-    const blob = new Blob([JSON.stringify(params)], headers)
+    const blob = new Blob([JSON.stringify(data)], headers)
     navigator.sendBeacon(requestUrl, blob)
   }
 
   private requestByGet<T extends RequestOptions>(url: string, data: T) {
     const img = document.createElement('img')
-    const params = qsStringify({
-      ...this.getCurrInfo(),
-      time: new Date().getTime(),
-      ...data,
-      actions: JSON.stringify(data.actions)
-    })
-    console.log('params~~ ', params)
 
-    img.src = `${url}?_t=${+new Date()}&${params}`
+    console.log('params~~ ', data)
+    img.src = `${url}?_t=${+new Date()}&${qsStringify(data)}`
     img.style.display = 'none'
 
     document.body.appendChild(img)
@@ -246,6 +246,7 @@ export default class Monitor {
       this.targetKeyReport(eventList)
     }
     if (pushPerformance) {
+      performanceMonitor.call(this)
     }
     if (jsErrorTracker) {
       console.log('开启js错误')
