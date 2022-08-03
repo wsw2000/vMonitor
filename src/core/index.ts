@@ -8,7 +8,7 @@ import { on } from '../utils/listener'
 import { qsStringify, delEmptyQueryNodes } from '../utils'
 import { getParentsByAttrKey, getMonitorPaths } from '../utils/dom'
 import { performanceMonitor } from './performance'
-import { errorEvent } from './error'
+import { errorEvent, promiseReject } from './error'
 
 export default class Monitor {
   public defaultOptons: DefaultConfigOptons
@@ -42,6 +42,7 @@ export default class Monitor {
       historyTracker: false,
       hashTracker: false,
       beaconTracker: false,
+      pushPerformance: false,
       domTracker: true,
       debug: false,
       jsErrorTracker: true,
@@ -62,7 +63,6 @@ export default class Monitor {
 
   //设置
   public setConfig(config: RequestOptions) {
-    console.log('setConfig~~ ', config)
     this.defaultOptons = {
       ...this.defaultOptons,
       ...config
@@ -224,7 +224,6 @@ export default class Monitor {
   private requestByGet<T extends RequestOptions>(url: string, data: T) {
     const img = document.createElement('img')
 
-    console.log('params~~ ', data)
     img.src = `${url}?_t=${+new Date()}&${qsStringify(data)}`
     img.style.display = 'none'
 
@@ -252,6 +251,7 @@ export default class Monitor {
     }
     if (jsErrorTracker) {
       errorEvent.call(this)
+      promiseReject.call(this)
     }
   }
 }

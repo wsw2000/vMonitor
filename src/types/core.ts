@@ -47,6 +47,7 @@ export interface DefaultConfigOptons {
  * @path_name 页面name
  * @event_name  '点击名称'
  * @event_value '点击按钮的值｜input的值'
+ * @error_message 报错的message
  * @config 自定义配置
  */
 export interface RequestOptions
@@ -64,6 +65,7 @@ export interface RequestOptions
   name?: string
   event_value?: string
   value?: string
+  error_message?: string
   config?: Record<string, any> | undefined
 }
 

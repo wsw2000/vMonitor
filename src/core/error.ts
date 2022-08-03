@@ -4,8 +4,6 @@ export function errorEvent(this: Monitor) {
   window.addEventListener(
     'error',
     e => {
-      console.log('error ~~   ', e)
-
       const target: any = e.srcElement || e.target
 
       const error_url = target?.src || target?.href
@@ -24,13 +22,11 @@ export function errorEvent(this: Monitor) {
 
 export function promiseReject(this: Monitor) {
   window.addEventListener('unhandledrejection', event => {
-    console.log('event~ ', event)
-
     event.promise.catch(error => {
       this.push({
         type: 'reject',
         config: {
-          message: error
+          error_message: error
         }
       })
     })
