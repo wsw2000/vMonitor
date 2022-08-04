@@ -21,6 +21,9 @@
 
 ```bash
 npm install use-monitor
+```
+
+```typescript
 import Monitor form use-monitor
 var monitor = new Monitor({
   url: '//127.0.0.1:8088/report',
@@ -37,7 +40,6 @@ var monitor = new Monitor({
     uuid: 'wsw'
   }
 })
-
 ```
 ### 设置第二级模块，按模块统计 PV、UV 
 

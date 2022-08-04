@@ -5,6 +5,16 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "node": "./dist/index.cjs.js",
+        "default": "./dist/index.esm.js"
+      },
+      "require": "./index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development rollup -w -c",

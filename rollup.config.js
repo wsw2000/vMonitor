@@ -14,12 +14,12 @@ export default [
     //入口文件
     input: './src/core/index.ts',
     output: [
-      //打包esModule
+      //打包 esModule
       {
         file: path.resolve(__dirname, './dist/index.esm.js'),
         format: 'es'
       },
-      //打包common js
+      //打包 commonjs
       {
         file: path.resolve(__dirname, './dist/index.cjs.js'),
         format: 'cjs'
