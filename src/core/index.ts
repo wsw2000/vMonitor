@@ -255,3 +255,5 @@ export default class Monitor {
     }
   }
 }
+
+export { DefaultConfigOptons, RequestOptions, MonitorConfig }
