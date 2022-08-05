@@ -29,7 +29,7 @@ import Monitor, { DefaultConfigOptons } from 'use-monitor'
 
 const options: DefaultConfigOptons = {
 	requestUrl: '121',
-   app_id: 1121212,
+  app_id: 1121212,
   app_name: 'app_name',
   module_name: 'module_name1',
   historyTracker: true,
