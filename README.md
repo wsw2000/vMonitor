@@ -24,10 +24,12 @@ npm install use-monitor
 ```
 
 ```typescript
-import Monitor form use-monitor
-var monitor = new Monitor({
-  url: '//127.0.0.1:8088/report',
-  app_id: 1121212,
+
+import Monitor, { DefaultConfigOptons } from 'use-monitor'
+
+const options: DefaultConfigOptons = {
+	requestUrl: '121',
+   app_id: 1121212,
   app_name: 'app_name',
   module_name: 'module_name1',
   historyTracker: true,
@@ -39,7 +41,15 @@ var monitor = new Monitor({
   config: {
     uuid: 'wsw'
   }
+}
+
+const monitor = new Monitor(options)
+
+monitor.push({
+  type: 'click',
+  path: ['广告列表'] || '',
 })
+
 ```
 ### 设置第二级模块，按模块统计 PV、UV 
 
