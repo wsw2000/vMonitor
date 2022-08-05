@@ -1,6 +1,6 @@
 {
   "name": "use-monitor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "use-monitor是轻量级前端埋点监控上报sdk",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
