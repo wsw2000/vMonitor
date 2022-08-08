@@ -12,7 +12,7 @@ module.exports = {
     node: true,
     jest: true
   },
-  ignorePatterns: ['dist', 'node_modules', '*.d.ts'],
+  ignorePatterns: ['dist', 'node_modules', '*.d.ts', 'examples/*.html'],
   rules: {
     semi: ['warn', 'never'],
     eqeqeq: 'warn',

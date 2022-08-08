@@ -28,7 +28,7 @@ npm install use-monitor
 import Monitor, { DefaultConfigOptons } from 'use-monitor'
 
 const options: DefaultConfigOptons = {
-	requestUrl: '121',
+  requestUrl: '//127.0.0.1:8080/report',
   app_id: 1121212,
   app_name: 'app_name',
   module_name: 'module_name1',
