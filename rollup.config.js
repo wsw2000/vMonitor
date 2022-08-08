@@ -18,8 +18,7 @@ const plugins = [
   }), //配置ts
   babel({
     exclude: 'node_modules/**', // 防止打包node_modules下的文件
-    extensions: ['.js', '.ts'],
-    babelHelpers: 'runtime'
+    extensions: ['.js', '.ts']
   }),
   isPro && terser() // 压缩代码
 ]

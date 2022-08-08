@@ -7,6 +7,5 @@
       }
     ]
   ],
-  "ignore": ["node_modules/**"],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  "ignore": ["node_modules/**"]
 }
