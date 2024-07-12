@@ -1,9 +1,9 @@
 /** @format */
 
-import { DefaultConfigOptons, RequestOptions, MonitorConfig } from '../types/core'
+import { DefaultConfigOptions, RequestOptions, MonitorConfig } from '../types/core'
 import { EventMap } from '../types/event'
 import { bindHistoryEvent, pageEventList, mouseEventList } from '../utils/event'
-import { ishasSendBeacon } from '../utils/is'
+import { isHasSendBeacon } from '../utils/is'
 import { on } from '../utils/listener'
 import { qsStringify, delEmptyQueryNodes } from '../utils'
 import { getParentsByAttrKey, getMonitorPaths } from '../utils/dom'
@@ -11,24 +11,24 @@ import { performanceMonitor } from './performance'
 import { errorEvent, promiseReject } from './error'
 
 export default class Monitor {
-  public defaultOptons: DefaultConfigOptons
+  public defaultOptions: DefaultConfigOptions
   private version: string | undefined
   public requestOptions: RequestOptions
 
-  public constructor(options: DefaultConfigOptons) {
+  public constructor(options: DefaultConfigOptions) {
     this.requestOptions = <RequestOptions>{}
 
-    this.defaultOptons = this.initDef(options)
+    this.defaultOptions = this.initDef(options)
 
     this.installMonitor()
   }
 
-  public setToken<T extends DefaultConfigOptons['token']>(token: T) {
-    this.defaultOptons.token = token
+  public setToken<T extends DefaultConfigOptions['token']>(token: T) {
+    this.defaultOptions.token = token
   }
 
   //初始化配置参数,请求参数,版本号
-  private initDef(options: DefaultConfigOptons): DefaultConfigOptons {
+  private initDef(options: DefaultConfigOptions): DefaultConfigOptions {
     this.version = MonitorConfig.version
 
     this.setRequestOptions(options)
@@ -37,7 +37,7 @@ export default class Monitor {
     window.history['pushState'] = bindHistoryEvent('pushState')
     window.history['replaceState'] = bindHistoryEvent('replaceState')
 
-    return <DefaultConfigOptons>{
+    return <DefaultConfigOptions>{
       sdkVersion: this.version,
       historyTracker: false,
       hashTracker: false,
@@ -63,11 +63,11 @@ export default class Monitor {
 
   //设置
   public setConfig(config: RequestOptions) {
-    this.defaultOptons = {
-      ...this.defaultOptons,
+    this.defaultOptions = {
+      ...this.defaultOptions,
       ...config
     }
-    this.setRequestOptions(this.defaultOptons)
+    this.setRequestOptions(this.defaultOptions)
   }
   public getCurrInfo() {
     return <RequestOptions>{
@@ -81,7 +81,7 @@ export default class Monitor {
   }
   // 打印日志到控制台
   private pushDebuggerLog<T extends RequestOptions>(data: T) {
-    if (!this.defaultOptons.debug) {
+    if (!this.defaultOptions.debug) {
       return
     }
 
@@ -192,7 +192,7 @@ export default class Monitor {
 
   // 上报
   private reportTracker<T extends RequestOptions>(data: T) {
-    const requestUrl = this.defaultOptons.requestUrl || this.defaultOptons.url
+    const requestUrl = this.defaultOptions.requestUrl || this.defaultOptions.url
     const params = Object.assign(
       this.getCurrInfo(),
       data,
@@ -206,7 +206,7 @@ export default class Monitor {
     const _params = delEmptyQueryNodes(params)
     this.pushDebuggerLog(_params)
 
-    if (this.defaultOptons.beaconTracker && !!ishasSendBeacon) {
+    if (this.defaultOptions.beaconTracker && !!isHasSendBeacon) {
       this.requestByPost(requestUrl!, _params)
       return
     }
@@ -233,7 +233,7 @@ export default class Monitor {
 
   private installMonitor() {
     const { historyTracker, hashTracker, jsErrorTracker, pushPerformance, domTracker } =
-      this.defaultOptons
+      this.defaultOptions
 
     if (historyTracker) {
       this.captureEvents(['pushState', 'replaceState', 'popstate'])
@@ -242,7 +242,7 @@ export default class Monitor {
       this.captureEvents(['hashchange'])
     }
     if (domTracker) {
-      const { domEventList } = this.defaultOptons
+      const { domEventList } = this.defaultOptions
       const eventList = domEventList?.length ? domEventList : mouseEventList
       this.targetKeyReport(eventList)
     }

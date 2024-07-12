@@ -14,7 +14,7 @@
  * @domEventList  Array<keyof WindowEventMap> ['click', 'dblclick','mousedown'] 默认['click']
  * @config 自定义配置
  */
-export interface DefaultConfigOptons {
+export interface DefaultConfigOptions {
   requestUrl: string
   url?: string
   app_id?: string | undefined
@@ -51,7 +51,7 @@ export interface DefaultConfigOptons {
  * @config 自定义配置
  */
 export interface RequestOptions
-  extends Pick<DefaultConfigOptons, 'app_id' | 'app_name' | 'token' | 'module' | 'module_name'> {
+  extends Pick<DefaultConfigOptions, 'app_id' | 'app_name' | 'token' | 'module' | 'module_name'> {
   ua?: string
   url?: string
   domain?: string

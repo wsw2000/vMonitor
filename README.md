@@ -1,22 +1,24 @@
-
 # use-monitor
-轻量级前端埋点监控上报sdk
 
-## Features 
+轻量级前端埋点监控上报 sdk
+
+## Features
+
 - [x] 自动手动监听页面访问量(PV)
 - [x] 自动手动记录独立访客(UV)
-- [x] 自动手动DOM事件监听获取用户操作(UV)
+- [x] 自动手动 DOM 事件监听获取用户操作(UV)
 - [x] 自定义埋点信息
-- [x] 自动监听页面js报错
-- [ ]  性能指标统计
-
+- [x] 自动监听页面 js 报错
+- [ ] 性能指标统计
 
 ## 使用
 
 ### 浏览器引入
+
 ```html
 <script src="use-monitor/dist/index.js"></script>
 ```
+
 ### npm
 
 ```bash
@@ -24,10 +26,9 @@ npm install use-monitor
 ```
 
 ```typescript
+import Monitor, { DefaultConfigOptions } from 'use-monitor'
 
-import Monitor, { DefaultConfigOptons } from 'use-monitor'
-
-const options: DefaultConfigOptons = {
+const options: DefaultConfigOptions = {
   requestUrl: '//127.0.0.1:8080/report',
   app_id: 1121212,
   app_name: 'app_name',
@@ -47,11 +48,11 @@ const monitor = new Monitor(options)
 
 monitor.push({
   type: 'click',
-  path: ['广告列表'] || '',
+  path: ['广告列表'] || ''
 })
-
 ```
-### 设置第二级模块，按模块统计 PV、UV 
+
+### 设置第二级模块，按模块统计 PV、UV
 
 ```js
 // 例如页面组件创建前后的生命周期如vue的created 配置module_name
@@ -95,6 +96,7 @@ monitor.push({
 ```
 
 ### 自动统计点击
+
 1、标签属性
 
 - m_p 代表路径(path_name)
@@ -115,6 +117,7 @@ monitor.push({
   <option m_btn="点击状态筛选" m_val="暂停">暂停</option>
 </select>
 ```
+
 ### 手动触发点击上报
 
 ```js
@@ -145,7 +148,6 @@ monitor.push({
 })
 ```
 
-
 ### options
 
 ```typescript
@@ -158,14 +160,14 @@ monitor.push({
  * @historyTracker history上报   默认false
  * @hashTracker hash上报    默认false
  * @domTracker dom事件上报  默认true
- * @beaconTracker 是否使用navigator.sendBeacon(post)上报 默认使用img get请求 
+ * @beaconTracker 是否使用navigator.sendBeacon(post)上报 默认使用img get请求
  * @pushPerformance 页面性能上报  默认false
  * @jsErrorTracker js 和 promise 报错异常上报  默认true
  * @sdkVersionsdk 版本
  * @domEventList  Array<keyof WindowEventMap> ['click', 'dblclick','mousedown'] 默认['click']
  * @config 自定义配置
  */
-export interface DefaultConfigOptons {
+export interface DefaultConfigOptions {
   requestUrl: string
   url?: string
   app_id?: string | undefined
@@ -206,7 +208,7 @@ export interface DefaultConfigOptons {
  * @config 自定义配置
  */
 export interface RequestOptions
-  extends Pick<DefaultConfigOptons, 'app_id' | 'app_name' | 'token' | 'module' | 'module_name'> {
+  extends Pick<DefaultConfigOptions, 'app_id' | 'app_name' | 'token' | 'module' | 'module_name'> {
   ua?: string
   url?: string
   domain?: string
@@ -227,14 +229,14 @@ export interface RequestOptions
 
 ### 方法
 
-| 实例方法                          |说明                     |
-| ---------------------------------| -----------------------|
-| push(op:object)                  | 推送数据                |
-| push(op:object)                  | 推送数据                |
-| setConfig()                      | 修改配置                |
-
+| 实例方法        | 说明     |
+| --------------- | -------- |
+| push(op:object) | 推送数据 |
+| push(op:object) | 推送数据 |
+| setConfig()     | 修改配置 |
 
 ## 说明
-- 这个埋点sdk参考我公司的埋点业务，简单用typescript跟rollup实现了mini版本
-- 添加了自动history跟hash上报，不过一般在页面组件添加module_name即可
+
+- 这个埋点 sdk 参考我公司的埋点业务，简单用 typescript 跟 rollup 实现了 mini 版本
+- 添加了自动 history 跟 hash 上报，不过一般在页面组件添加 module_name 即可
 - 可以自定义扩展参数

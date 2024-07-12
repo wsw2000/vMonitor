@@ -64,7 +64,7 @@ export function isWindow(el: any): el is Window {
   return el === window
 }
 
-export function ishasSendBeacon(): boolean {
+export function isHasSendBeacon(): boolean {
   return navigator.sendBeacon && typeof navigator.sendBeacon === 'function'
 }
 
