@@ -1,6 +1,6 @@
 {
   "name": "use-monitor",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "use-monitor是轻量级前端埋点监控上报sdk",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -30,10 +30,14 @@
     "前端埋点",
     "monitor"
   ],
-  "author": "",
+  "author": "wsw",
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wsw2000/vMonitor.git"
+  },
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@babel/plugin-transform-runtime": "^7.18.9",
